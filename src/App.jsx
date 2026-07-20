@@ -173,6 +173,13 @@ const IconCheck = (p) => (
   </Icon>
 );
 
+const IconSparkle = (p) => (
+  <Icon {...p}>
+    <path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z" />
+  </Icon>
+);
+
+
 const LogoMark = ({ size = 44 }) => (
   <svg width={size} height={size} viewBox="0 0 64 64" fill="none">
     <path
@@ -203,7 +210,7 @@ const AVAILABLE_CLASSES_BY_DAY = {
       id: "a1",
       tutor: "Personal 1",
       hora: "10:00 am",
-      tema: "Speaking Class",
+      tema: "Conversacion Tema Libre",
       nivel: "Intermedio B1",
     },
     {
@@ -228,14 +235,14 @@ const AVAILABLE_CLASSES_BY_DAY = {
       id: "a4",
       tutor: "Personal 1",
       hora: "15:00 pm",
-      tema: "Speaking Class",
+      tema: "Conversacion Tema Libre",
       nivel: "Intermedio B1",
     },
     {
       id: "a5",
       tutor: "Personal 2",
       hora: "18:30 pm",
-      tema: "Gramática aplicada",
+      tema: "Vocabulario para Eventos Sociales",
       nivel: "Intermedio B2",
     },
   ],
@@ -253,7 +260,7 @@ const AVAILABLE_CLASSES_BY_DAY = {
       id: "a7",
       tutor: "Personal 1",
       hora: "14:00 pm",
-      tema: "Speaking Class",
+      tema: "Conversacion Tema Libre",
       nivel: "Intermedio B1",
     },
   ],
@@ -274,7 +281,7 @@ const MY_CLASSES_INIT = [
     id: "m1",
     estado: "proxima",
     tutor: "Personal 1",
-    tema: "Speaking Class",
+    tema: "Conversacion Tema Libre",
     fecha: "21/06/26",
     hora: "15:00 pm",
     puedeUnirse: true,
@@ -283,7 +290,7 @@ const MY_CLASSES_INIT = [
     id: "m2",
     estado: "proxima",
     tutor: "Personal 2",
-    tema: "Gramática aplicada",
+    tema: "Vocabulario para Eventos Sociales",
     fecha: "22/06/26",
     hora: "18:30 pm",
     puedeUnirse: false,
@@ -301,7 +308,7 @@ const MY_CLASSES_INIT = [
     id: "m4",
     estado: "pasada",
     tutor: "Personal 1",
-    tema: "Speaking Class",
+    tema: "Conversacion Tema Libre",
     fecha: "14/06/26",
     hora: "15:00 pm",
     puedeUnirse: false,
@@ -796,6 +803,28 @@ const FontImport = () => (
     .t2m-pulse  { animation: t2m-pulse 1.3s infinite; }
     .t2m-toast  { animation: t2m-toast-in .25s ease; }
     .t2m-hide-scroll::-webkit-scrollbar { display:none; }
+    @keyframes t2m-pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255,107,91,0.7);
+    transform: translateY(-50%) scale(1);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255,107,91,0);
+    transform: translateY(-50%) scale(1.3);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255,107,91,0);
+    transform: translateY(-50%) scale(1);
+  }
+}
+  @keyframes t2m-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 8px 2px rgba(255,107,91,0.2), 0 0 20px 6px rgba(255,107,91,0.1);
+  }
+  50% {
+    box-shadow: 0 0 16px 6px rgba(255,107,91,0.5), 0 0 40px 12px rgba(255,107,91,0.2);
+  }
+}
     .t2m-hide-scroll { -ms-overflow-style:none; scrollbar-width:none; }
     .t2m-tile:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -8px rgba(27,58,92,0.22); }
     .t2m-home:hover { transform: scale(1.08); background: rgba(27,58,92,0.06); }
@@ -803,6 +832,7 @@ const FontImport = () => (
     h1,h2,h3 { font-family:'Fredoka', sans-serif; }
   `}</style>
 );
+
 
 /* ===================== Shared bits ===================== */
 const HomeButton = ({ onClick }) => (
@@ -846,7 +876,6 @@ const TopTitle = ({ eyebrow, title }) => (
 );
 
 /* ===================== Screens ===================== */
-
 // 1. Splash / selección de perfil
 function ScreenSplash({ go }) {
   const items = [
@@ -858,39 +887,11 @@ function ScreenSplash({ go }) {
       color: COLORS.coralDark,
     },
     {
-      key: "reg-univ",
-      label: "Registro Universitario",
-      icon: <IconUsers />,
-      bg: "rgba(27,58,92,0.10)",
-      color: COLORS.ink,
-    },
-    {
       key: "reg-estud",
-      label: "Registro Estudiante",
+      label: "Registrarse",
       icon: <IconEdit />,
       bg: "rgba(74,155,142,0.14)",
       color: COLORS.mint,
-    },
-    {
-      key: "soporte",
-      label: "Contacto y soporte",
-      icon: <IconMail />,
-      bg: "rgba(232,162,61,0.16)",
-      color: COLORS.warn,
-    },
-    {
-      key: "recuperar",
-      label: "Recuperar contraseña",
-      icon: <IconLock />,
-      bg: "rgba(255,107,91,0.14)",
-      color: COLORS.coralDark,
-    },
-    {
-      key: "inicio",
-      label: "Ver pantalla de inicio",
-      icon: <IconBolt />,
-      bg: "rgba(27,58,92,0.10)",
-      color: COLORS.ink,
     },
   ];
   return (
@@ -999,7 +1000,7 @@ function ScreenRegUniv({ go }) {
     <div style={s.pad}>
       <BackRow onBack={() => go("splash")} />
       <TopTitle
-        eyebrow="Cuenta institucional"
+        eyebrow="Terminos y Condiciones"
         title="Registro de universidad"
       />
       <div style={s.field}>
@@ -1023,12 +1024,11 @@ function ScreenRegUniv({ go }) {
         style={{ ...s.btn, ...s.btnPrimary }}
         onClick={() => go("login")}
       >
-        Crear cuenta institucional
+        Crear Terminos y Condiciones
       </button>
     </div>
   );
 }
-
 // 5. Registro estudiante
 function ScreenRegEstud({ go }) {
   return (
@@ -1097,7 +1097,7 @@ function ScreenSoporte({ go }) {
     </div>
   );
 }
-
+//
 // 7. Inicio (home)
 function ScreenInicio({ go }) {
   const tiles = [
@@ -1165,7 +1165,7 @@ function ScreenInicio({ go }) {
         onClick={() => go("mis-clases")}
       >
         <div style={{ fontWeight: 700, color: COLORS.ink, fontSize: 14 }}>
-          Tu próxima clase: Speaking Class
+          Tu próxima clase: Conversacion Tema Libre
         </div>
         <div style={{ fontSize: 12.5, color: COLORS.textSoft, marginTop: 3 }}>
           Hoy · 15:00 pm con tu tutor personal
@@ -1193,13 +1193,388 @@ function ScreenInicio({ go }) {
           </div>
         ))}
       </div>
-      <div style={s.sectionLabel}>Tu semana</div>
-      <div style={s.card}>
-        <div style={s.flexBetween}>
-          <span style={{ fontSize: 13, fontWeight: 700, color: COLORS.ink }}>
-            Lección: Pasado simple
-          </span>
-          <span style={s.pillTag}>75%</span>
+      
+      {/* === Tu posición en la clase === */}
+      <div
+  style={{
+    fontSize: 11,
+    fontWeight: 800,
+    letterSpacing: "0.05em",
+    textTransform: "uppercase",
+    color: COLORS.inkLight,
+    margin: "22px 0 10px",
+    textAlign: "center",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  }}
+>
+  <span
+    style={{
+      padding: "6px 16px",
+      borderRadius: 20,
+      animation: "t2m-glow-pulse 2s infinite",
+    }}
+  >
+    Tu posición
+  </span>
+</div>
+      <div
+        style={{
+          ...s.card,
+          background: `linear-gradient(135deg, ${COLORS.ink} 0%, ${COLORS.inkLight} 100%)`,
+          color: "white",
+          border: "none",
+          position: "relative",
+          overflow: "hidden",
+          maxHeight: 280,
+        }}
+      >
+        {/* Contenedor scrollable con contenido extra */}
+        <div
+          style={{
+            maxHeight: 280,
+            overflowY: "auto",
+            paddingRight: 4,
+          }}
+          className="t2m-hide-scroll"
+        >
+          <div style={{ textAlign: "center", marginBottom: 14 }}>
+            <div
+              style={{
+                fontSize: 11,
+                opacity: 0.75,
+                fontWeight: 600,
+                letterSpacing: "0.05em",
+                textTransform: "uppercase",
+                marginBottom: 4,
+              }}
+            >
+              Ranking de tu clase
+            </div>
+            <div
+              style={{
+                fontSize: 42,
+                fontWeight: 800,
+                fontFamily: "'Fredoka', sans-serif",
+                lineHeight: 1,
+              }}
+            >
+              #3
+            </div>
+            <div style={{ fontSize: 12, opacity: 0.85, marginTop: 4 }}>
+              de 24 estudiantes
+            </div>
+          </div>
+
+          {/* Top 3 */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-end",
+              justifyContent: "center",
+              gap: 14,
+              marginBottom: 16,
+            }}
+          >
+            {/* 2do lugar */}
+            <div style={{ textAlign: "center" }}>
+              <div
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: "50%",
+                  background: "rgba(255,255,255,0.15)",
+                  border: "2px solid rgba(255,255,255,0.3)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 16,
+                  fontWeight: 700,
+                  margin: "0 auto 6px",
+                }}
+              >
+                C
+              </div>
+              <div style={{ fontSize: 10, opacity: 0.7 }}>2°</div>
+              <div style={{ fontSize: 11, fontWeight: 700 }}>Carlos</div>
+              <div style={{ fontSize: 10, opacity: 0.6 }}>1,240 pts</div>
+            </div>
+
+            {/* 1er lugar */}
+            <div style={{ textAlign: "center" }}>
+              <div
+                style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: "50%",
+                  background: "rgba(255,107,91,0.25)",
+                  border: `2px solid ${COLORS.coral}`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 20,
+                  fontWeight: 800,
+                  margin: "0 auto 6px",
+                  position: "relative",
+                }}
+              >
+                M
+                <span
+                  style={{
+                    position: "absolute",
+                    top: -8,
+                    fontSize: 16,
+                  }}
+                >
+                  👑
+                </span>
+              </div>
+              <div style={{ fontSize: 10, opacity: 0.7 }}>1°</div>
+              <div style={{ fontSize: 12, fontWeight: 700 }}>María</div>
+              <div style={{ fontSize: 10, opacity: 0.6 }}>1,580 pts</div>
+            </div>
+
+            {/* 3er lugar - TÚ */}
+            <div style={{ textAlign: "center" }}>
+              <div
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: "50%",
+                  background: COLORS.coral,
+                  border: `2px solid white`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 16,
+                  fontWeight: 700,
+                  margin: "0 auto 6px",
+                }}
+              >
+                A
+              </div>
+              <div style={{ fontSize: 10, opacity: 0.7 }}>3°</div>
+              <div style={{ fontSize: 11, fontWeight: 700 }}>Tú</div>
+              <div style={{ fontSize: 10, opacity: 0.6 }}>1,185 pts</div>
+            </div>
+          </div>
+
+          {/* Tu progreso hacia el siguiente puesto */}
+          <div
+            style={{
+              background: "rgba(255,255,255,0.1)",
+              borderRadius: 12,
+              padding: "12px 14px",
+              marginBottom: 12,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 8,
+              }}
+            >
+              <span style={{ fontSize: 12, fontWeight: 600 }}>
+                🎯 A 55 pts del 2° lugar
+              </span>
+              <span style={{ fontSize: 11, opacity: 0.8 }}>1,185 / 1,240</span>
+            </div>
+            <div
+              style={{
+                height: 6,
+                background: "rgba(255,255,255,0.15)",
+                borderRadius: 4,
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  height: "100%",
+                  width: "95%",
+                  background: COLORS.coral,
+                  borderRadius: 4,
+                }}
+              />
+            </div>
+          </div>
+
+          {/* MÁS CONTENIDO que aparece al deslizar */}
+          <div style={{ marginBottom: 12 }}>
+            <div
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                opacity: 0.7,
+                marginBottom: 8,
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+              }}
+            >
+              Top 4 - 6
+            </div>
+            {[
+              { pos: 4, name: "Lucía", pts: "1,050", you: false },
+              { pos: 5, name: "Pedro", pts: "980", you: false },
+              { pos: 6, name: "Sofía", pts: "920", you: false },
+            ].map((p) => (
+              <div
+                key={p.pos}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  padding: "8px 0",
+                  borderBottom: "1px solid rgba(255,255,255,0.1)",
+                }}
+              >
+                <div
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: "50%",
+                    background: "rgba(255,255,255,0.1)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 11,
+                    fontWeight: 700,
+                  }}
+                >
+                  {p.pos}
+                </div>
+                <div style={{ flex: 1, fontSize: 12.5, fontWeight: 600 }}>
+                  {p.name}
+                </div>
+                <div style={{ fontSize: 11, opacity: 0.7 }}>{p.pts} pts</div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginBottom: 12 }}>
+            <div
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                opacity: 0.7,
+                marginBottom: 8,
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+              }}
+            >
+              Tu rendimiento
+            </div>
+            {[
+              { label: "Speaking", val: 82, color: COLORS.coral },
+              { label: "Listening", val: 75, color: COLORS.mint },
+              { label: "Grammar", val: 68, color: COLORS.warn },
+              { label: "Vocabulary", val: 90, color: COLORS.coral },
+            ].map((skill) => (
+              <div key={skill.label} style={{ marginBottom: 10 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    fontSize: 11.5,
+                    marginBottom: 4,
+                  }}
+                >
+                  <span>{skill.label}</span>
+                  <span style={{ opacity: 0.8 }}>{skill.val}%</span>
+                </div>
+                <div
+                  style={{
+                    height: 5,
+                    background: "rgba(255,255,255,0.1)",
+                    borderRadius: 3,
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                    style={{
+                      height: "100%",
+                      width: `${skill.val}%`,
+                      background: skill.color,
+                      borderRadius: 3,
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* FADE en la parte inferior para indicar más contenido */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 50,
+            background: `linear-gradient(to bottom, transparent 0%, ${COLORS.inkLight} 70%, ${COLORS.ink} 100%)`,
+            pointerEvents: "none",
+            zIndex: 2,
+            borderRadius: "0 0 16px 16px",
+          }}
+        />
+        {/* Indicador de scroll */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 6,
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 3,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 3,
+          }}
+        >
+          <div
+            style={{
+              width: 32,
+              height: 4,
+              borderRadius: 2,
+              background: "rgba(255,255,255,0.35)",
+            }}
+          />
+          <div
+            style={{
+              fontSize: 8,
+              color: "rgba(255,255,255,0.5)",
+              fontWeight: 600,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+            }}
+          >
+            desliza
+          </div>
+        </div>
+      </div>
+
+
+      {/* === Estadísticas rápidas === */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginTop: 4 }}>
+        <div style={{ ...s.card, textAlign: "center", padding: "14px 10px" }}>
+          <div style={{ fontSize: 22, fontWeight: 800, color: COLORS.mint, fontFamily: "'Fredoka', sans-serif" }}>
+            12
+          </div>
+          <div style={{ fontSize: 11, color: COLORS.textSoft, marginTop: 2 }}>
+            Clases completadas
+          </div>
+        </div>
+        <div style={{ ...s.card, textAlign: "center", padding: "14px 10px" }}>
+          <div style={{ fontSize: 22, fontWeight: 800, color: COLORS.coral, fontFamily: "'Fredoka', sans-serif" }}>
+            98%
+          </div>
+          <div style={{ fontSize: 11, color: COLORS.textSoft, marginTop: 2 }}>
+            Asistencia
+          </div>
         </div>
       </div>
     </div>
@@ -1207,56 +1582,432 @@ function ScreenInicio({ go }) {
 }
 
 // 8. Progreso
+
+
+// 8. Progreso — Interfaz con IA Coach
 function ScreenProgreso({ go }) {
+  // Datos simulados del estudiante (en producción vendrían del backend)
+  const studentData = {
+    name: "Ana",
+    level: "Intermedio B1",
+    levelProgress: 72, // % hacia el siguiente nivel
+    hoursPracticed: 14.5,
+    goalHours: 20,
+    classesCompleted: 9,
+    totalClasses: 12,
+    streakDays: 5,
+    nextMilestone: "B2",
+    weakAreas: ["Pronunciación de TH", "Past Perfect"],
+    strongAreas: ["Vocabulario diario", "Listening básico"],
+    recentLessons: [
+      { name: "Past Simple", status: "completed", score: 85 },
+      { name: "Present Perfect", status: "completed", score: 78 },
+      { name: "Conditionals", status: "in_progress", progress: 60 },
+      { name: "Phrasal Verbs", status: "locked" },
+    ],
+  };
+
+  // Consejos generados por la "IA" según el progreso
+  const aiInsights = [
+    {
+      type: "praise",
+      icon: "🌟",
+      text: `¡Vas muy bien, ${studentData.name}! Llevas ${studentData.streakDays} días seguidos practicando. ¡Sigue así!`,
+    },
+    {
+      type: "tip",
+      icon: "💡",
+      text: `Tu nivel actual es ${studentData.level}. Estás al ${studentData.levelProgress}% de alcanzar ${studentData.nextMilestone}.`,
+    },
+    {
+      type: "focus",
+      icon: "🎯",
+      text: `Te recomiendo enfocarte en: ${studentData.weakAreas.join(" y ")}. Practica 10 min extra esta semana.`,
+    },
+    {
+      type: "achievement",
+      icon: "🏆",
+      text: `Has completado ${studentData.classesCompleted} de ${studentData.totalClasses} clases. ¡Casi llegas a tu meta!`,
+    },
+  ];
+
+  const getLessonStatusStyle = (status) => {
+    switch (status) {
+      case "completed":
+        return {
+          bg: "rgba(74,155,142,0.12)",
+          border: COLORS.mint,
+          icon: "✓",
+          color: COLORS.mint,
+        };
+      case "in_progress":
+        return {
+          bg: "rgba(255,107,91,0.10)",
+          border: COLORS.coral,
+          icon: "▶",
+          color: COLORS.coral,
+        };
+      case "locked":
+        return {
+          bg: "rgba(122,122,122,0.08)",
+          border: COLORS.line,
+          icon: "🔒",
+          color: COLORS.textSoft,
+        };
+      default:
+        return { bg: COLORS.paper, border: COLORS.line, icon: "•", color: COLORS.text };
+    }
+  };
+
   return (
     <div style={s.pad}>
       <BackRow onBack={() => go("inicio")} title="Tu progreso" />
-      <div style={s.card}>
-        <div style={{ ...s.flexBetween, marginBottom: 8 }}>
-          <span style={{ fontSize: 13, fontWeight: 700 }}>
-            Horas practicadas
-          </span>
-          <span style={{ fontSize: 13, fontWeight: 800, color: COLORS.mint }}>
-            14.5 h
-          </span>
-        </div>
-        <div style={{ height: 8, background: COLORS.line, borderRadius: 6 }}>
+
+      {/* === IA Coach Header === */}
+      <div
+        style={{
+          background: `linear-gradient(135deg, ${COLORS.ink} 0%, ${COLORS.inkLight} 100%)`,
+          borderRadius: 20,
+          padding: "20px 18px",
+          marginBottom: 18,
+          color: "white",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: -20,
+            right: -20,
+            width: 100,
+            height: 100,
+            borderRadius: "50%",
+            background: "rgba(255,107,91,0.15)",
+          }}
+        />
+        <div style={{ display: "flex", alignItems: "center", gap: 12, position: "relative", zIndex: 1 }}>
           <div
             style={{
-              height: 8,
-              width: "68%",
-              background: COLORS.mint,
-              borderRadius: 6,
+              width: 48,
+              height: 48,
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.15)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              border: "2px solid rgba(255,255,255,0.3)",
             }}
-          ></div>
-        </div>
-      </div>
-      <div style={s.card}>
-        <div style={{ ...s.flexBetween, marginBottom: 8 }}>
-          <span style={{ fontSize: 13, fontWeight: 700 }}>
-            Clases completadas
-          </span>
-          <span
-            style={{ fontSize: 13, fontWeight: 800, color: COLORS.coralDark }}
           >
-            9 / 12
-          </span>
+            <IconSparkle size={24} color="white" />
+          </div>
+          <div>
+            <div style={{ fontSize: 11, opacity: 0.75, fontWeight: 600, letterSpacing: "0.05em" }}>
+              TU COACH DE INGLÉS
+            </div>
+            <div style={{ fontSize: 15, fontWeight: 800, fontFamily: "'Fredoka', sans-serif" }}>
+              {studentData.level}
+            </div>
+          </div>
         </div>
-        <div style={{ height: 8, background: COLORS.line, borderRadius: 6 }}>
+        <div
+          style={{
+            marginTop: 14,
+            height: 8,
+            background: "rgba(255,255,255,0.15)",
+            borderRadius: 6,
+            overflow: "hidden",
+          }}
+        >
           <div
             style={{
-              height: 8,
-              width: "75%",
+              height: "100%",
+              width: `${studentData.levelProgress}%`,
               background: COLORS.coral,
               borderRadius: 6,
+              transition: "width 0.8s ease",
             }}
-          ></div>
+          />
+        </div>
+        <div
+          style={{
+            marginTop: 6,
+            fontSize: 11,
+            opacity: 0.8,
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <span>Progreso hacia {studentData.nextMilestone}</span>
+          <span style={{ fontWeight: 700 }}>{studentData.levelProgress}%</span>
         </div>
       </div>
-      <div style={s.card}>
-        <span style={{ fontSize: 13, fontWeight: 700 }}>Nivel actual</span>
-        <div style={{ marginTop: 6 }}>
-          <span style={s.pillTag}>Intermedio B1</span>
+
+      {/* === Consejos de la IA === */}
+      <div style={{ marginBottom: 18 }}>
+        <div
+          style={{
+            fontSize: 11,
+            fontWeight: 800,
+            letterSpacing: "0.05em",
+            textTransform: "uppercase",
+            color: COLORS.inkLight,
+            marginBottom: 10,
+          }}
+        >
+          Consejos de tu coach
+        </div>
+        {aiInsights.map((insight, i) => (
+          <div
+            key={i}
+            style={{
+              background: COLORS.paper,
+              borderRadius: 14,
+              padding: "14px 16px",
+              marginBottom: 10,
+              border: `1.4px solid ${COLORS.line}`,
+              boxShadow: "0 2px 8px -4px rgba(27,58,92,0.08)",
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 12,
+            }}
+          >
+            <div
+              style={{
+                width: 32,
+                height: 32,
+                borderRadius: 10,
+                background:
+                  insight.type === "praise"
+                    ? "rgba(255,107,91,0.12)"
+                    : insight.type === "tip"
+                    ? "rgba(74,155,142,0.12)"
+                    : insight.type === "focus"
+                    ? "rgba(232,162,61,0.12)"
+                    : "rgba(27,58,92,0.08)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 16,
+                flexShrink: 0,
+              }}
+            >
+              {insight.icon}
+            </div>
+            <div style={{ fontSize: 12.5, color: COLORS.text, lineHeight: 1.6, paddingTop: 2 }}>
+              {insight.text}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* === Estadísticas rápidas === */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 10,
+          marginBottom: 18,
+        }}
+      >
+        {[
+          {
+            label: "Horas practicadas",
+            value: `${studentData.hoursPracticed}h`,
+            sub: `Meta: ${studentData.goalHours}h`,
+            color: COLORS.mint,
+            bg: "rgba(74,155,142,0.10)",
+          },
+          {
+            label: "Racha actual",
+            value: `${studentData.streakDays} días`,
+            sub: "¡Sigue así!",
+            color: COLORS.coral,
+            bg: "rgba(255,107,91,0.10)",
+          },
+        ].map((stat, i) => (
+          <div
+            key={i}
+            style={{
+              background: COLORS.paper,
+              borderRadius: 16,
+              padding: "16px 14px",
+              border: `1px solid ${COLORS.line}`,
+              textAlign: "center",
+            }}
+          >
+            <div style={{ fontSize: 10.5, color: COLORS.textSoft, fontWeight: 700, marginBottom: 6 }}>
+              {stat.label}
+            </div>
+            <div style={{ fontSize: 22, fontWeight: 800, color: stat.color, fontFamily: "'Fredoka', sans-serif" }}>
+              {stat.value}
+            </div>
+            <div style={{ fontSize: 11, color: COLORS.textSoft, marginTop: 2 }}>{stat.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* === Tus lecciones === */}
+      <div>
+        <div
+          style={{
+            fontSize: 11,
+            fontWeight: 800,
+            letterSpacing: "0.05em",
+            textTransform: "uppercase",
+            color: COLORS.inkLight,
+            marginBottom: 10,
+          }}
+        >
+          Tus lecciones
+        </div>
+        {studentData.recentLessons.map((lesson, i) => {
+          const style = getLessonStatusStyle(lesson.status);
+          return (
+            <div
+              key={i}
+              style={{
+                background: COLORS.paper,
+                borderRadius: 14,
+                padding: "14px 16px",
+                marginBottom: 10,
+                border: `1.6px solid ${style.border}`,
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+              }}
+            >
+              <div
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: "50%",
+                  background: style.bg,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: style.color,
+                  flexShrink: 0,
+                }}
+              >
+                {style.icon}
+              </div>
+              <div style={{ flex: 1 }}>
+                <div
+                  style={{
+                    fontSize: 13.5,
+                    fontWeight: 700,
+                    color: lesson.status === "locked" ? COLORS.textSoft : COLORS.ink,
+                  }}
+                >
+                  {lesson.name}
+                </div>
+                {lesson.status === "in_progress" && (
+                  <div style={{ marginTop: 6 }}>
+                    <div
+                      style={{
+                        height: 5,
+                        background: COLORS.line,
+                        borderRadius: 4,
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div
+                        style={{
+                          height: "100%",
+                          width: `${lesson.progress}%`,
+                          background: COLORS.coral,
+                          borderRadius: 4,
+                        }}
+                      />
+                    </div>
+                    <div style={{ fontSize: 10, color: COLORS.textSoft, marginTop: 3 }}>
+                      {lesson.progress}% completado
+                    </div>
+                  </div>
+                )}
+                {lesson.status === "completed" && (
+                  <div style={{ fontSize: 11, color: COLORS.mint, marginTop: 2, fontWeight: 600 }}>
+                    Puntuación: {lesson.score}/100
+                  </div>
+                )}
+                {lesson.status === "locked" && (
+                  <div style={{ fontSize: 11, color: COLORS.textSoft, marginTop: 2 }}>
+                    Completa las lecciones anteriores para desbloquear
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* === Áreas de mejora y fortalezas === */}
+      <div style={{ marginTop: 8 }}>
+        <div
+          style={{
+            fontSize: 11,
+            fontWeight: 800,
+            letterSpacing: "0.05em",
+            textTransform: "uppercase",
+            color: COLORS.inkLight,
+            marginBottom: 10,
+          }}
+        >
+          Análisis de tu coach
+        </div>
+        <div
+          style={{
+            background: "rgba(232,162,61,0.08)",
+            border: `1.4px dashed ${COLORS.warn}`,
+            borderRadius: 14,
+            padding: "14px 16px",
+            marginBottom: 10,
+          }}
+        >
+          <div style={{ fontSize: 12, fontWeight: 700, color: COLORS.warn, marginBottom: 6 }}>
+            🎯 Enfócate en mejorar
+          </div>
+          {studentData.weakAreas.map((area, i) => (
+            <div
+              key={i}
+              style={{
+                fontSize: 12.5,
+                color: COLORS.text,
+                padding: "6px 0",
+                borderBottom: i < studentData.weakAreas.length - 1 ? `1px solid ${COLORS.line}` : "none",
+              }}
+            >
+              • {area}
+            </div>
+          ))}
+        </div>
+        <div
+          style={{
+            background: "rgba(74,155,142,0.08)",
+            border: `1.4px dashed ${COLORS.mint}`,
+            borderRadius: 14,
+            padding: "14px 16px",
+          }}
+        >
+          <div style={{ fontSize: 12, fontWeight: 700, color: COLORS.mint, marginBottom: 6 }}>
+            💪 Tus fortalezas
+          </div>
+          {studentData.strongAreas.map((area, i) => (
+            <div
+              key={i}
+              style={{
+                fontSize: 12.5,
+                color: COLORS.text,
+                padding: "6px 0",
+                borderBottom: i < studentData.strongAreas.length - 1 ? `1px solid ${COLORS.line}` : "none",
+              }}
+            >
+              • {area}
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -1269,7 +2020,7 @@ function ScreenAjustes({ go }) {
     "Notificaciones",
     "Idioma de la app",
     "Privacidad",
-    "Cuenta institucional",
+    "Terminos y Condiciones",
     "Cerrar sesión",
   ];
   return (
@@ -2173,7 +2924,7 @@ function ScreenLlamada({ go }) {
             background: COLORS.coral,
           }}
         ></span>
-        Grabando
+        Transcribiendo
       </div>
       <div style={s.callMain}>
         <div style={s.callNameTag}>Personal 1 · Tutor</div>
